@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./helpers/connect_redis");
+require("../helpers/connect_rediss");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -7,9 +7,9 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const PORT = process.env.PORT || 5000;
-const db = require("./config/db");
+const db = require("../config/db");
 db.connect();
-const IndexRouter = require("./routers/index");
+const IndexRouter = require("../routers/index");
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-require("./socket")(io);
+require("../socket")(io);
 app.use("/", IndexRouter);
 
 // Catch 404 Errors and forward them to error handler
